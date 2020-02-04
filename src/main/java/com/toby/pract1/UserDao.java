@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDao {
+public abstract class UserDao {
 	public void add(User user) throws ClassNotFoundException, SQLException{
 		Connection c = getConnection();
 		PreparedStatement ps = c.prepareStatement(
@@ -39,11 +39,7 @@ public class UserDao {
 		
 		return user;
 	}
-	
-	private Connection getConnection() throws ClassNotFoundException, SQLException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection(
-				"jdbc:mysql://127.0.0.1:3306/mydb", "root", "1234");
-		return c;
-	}
+	//고객사 2곳이 서로 다른 데이터베이스에 접근해야한다고 가정함
+	//상속하는 경우 하위 정의 클래스에서 Connection만 재 정의해줌으로써 서로 다른 DB에서 동일한 동작을 할수있음
+	public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }
