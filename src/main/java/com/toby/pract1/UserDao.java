@@ -8,9 +8,9 @@ import java.sql.SQLException;
 public class UserDao {
 	private ConnectionMaker connectionMaker;
 	
-	public UserDao() {
+	public UserDao(ConnectionMaker connectionMaker) {
 		//D사일경우를 가정했으므로 생성자를 D커넥션 메이커를 호출
-		connectionMaker = new DConnectionMaker();
+		this.connectionMaker = connectionMaker;
 	}
 	public void add(User user) throws ClassNotFoundException, SQLException{
 		Connection c = connectionMaker.makeConnection();
