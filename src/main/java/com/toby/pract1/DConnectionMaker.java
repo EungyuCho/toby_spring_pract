@@ -3,15 +3,16 @@ package com.toby.pract1;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//D사 DBConnection ( N사와 다르다고 가정함)
-public class DUserDao extends UserDao{
+
+public class DConnectionMaker implements ConnectionMaker{
 
 	@Override
-	public Connection getConnection() throws ClassNotFoundException, SQLException {
+	public Connection makeConnection() throws ClassNotFoundException, SQLException {
+		//D사일 경우의 DB라고 가정
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection c = DriverManager.getConnection(
 				"jdbc:mysql://127.0.0.1:3306/mydb", "root", "1234");
 		return c;
 	}
-	
+
 }
