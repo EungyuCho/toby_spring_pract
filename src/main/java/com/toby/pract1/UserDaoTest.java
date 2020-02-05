@@ -1,11 +1,16 @@
 package com.toby.pract1;
 
 import java.sql.SQLException;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 //클라이언트라고 가정
 public class UserDaoTest {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException{
 		//Factory를 이용해서 Factory에게 Dao선택권한을 넘겨줌
-		UserDao dao = new DaoFactory().userDao();
+		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+		UserDao dao = context.getBean("userDao", UserDao.class);
 
 		User user = new User();
 		user.setId("whiteship");
