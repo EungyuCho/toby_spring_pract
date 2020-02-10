@@ -8,7 +8,9 @@ public class CountingDaoFactory {
 	
 	@Bean
 	public UserDao userDao() {
-		return new UserDao(connectionMaker());
+		UserDao userDao = new UserDao();
+		userDao.setConnectionMaker(connectionMaker());
+		return userDao;
 	}
 	
 	//CountingConnectionMaker를 통해서 Counting 기능을 구현해뒀음 (MakeConnection Counting)
