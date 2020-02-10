@@ -10,8 +10,8 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 public class UserDaoTest {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException{
 		//Factory를 이용해서 Factory에게 Dao선택권한을 넘겨줌
-//		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+//		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 		UserDao dao = context.getBean("userDao", UserDao.class);
 		
 		User user = new User();
