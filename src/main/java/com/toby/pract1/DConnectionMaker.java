@@ -12,6 +12,7 @@ public class DConnectionMaker implements ConnectionMaker{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection c = DriverManager.getConnection(
 				"jdbc:mysql://127.0.0.1:3306/mydb", "root", "1234");
+//		"jdbc:mysql://127.0.0.1:3306/mydb?serverTimezone=UTC", "root", "5180");
 		return c;
 	}
 
