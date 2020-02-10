@@ -10,12 +10,12 @@ import javax.sql.DataSource;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 public class UserDao {
-	private ConnectionMaker connectionMaker;
 	private DataSource datasource;
 
-	public void setConnectionMaker(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
-	}
+//	private ConnectionMaker connectionMaker;
+//	public void setConnectionMaker(ConnectionMaker connectionMaker) {
+//		this.connectionMaker = connectionMaker;
+//	}
 	
 	public void setDataSource(DataSource datasource) {
 		this.datasource = datasource;
