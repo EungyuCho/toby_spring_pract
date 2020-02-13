@@ -27,12 +27,5 @@
            Autowired를 통해서 정의한 ApplicationContext의 UserDao를 주입받기!
         </BlockQuote>
     </li>
-    <li>
-        <h4>&nbsp&nbsp<a href="https://github.com/EungyuCho/toby_spring_pract/commit/74b2b8af2675cda0dee6b6e5a89aeeaf22ed6f77">>></a></h4>
-        <BlockQuote>
-           Before을 통해 테스트 단계에서 값들을 주입 받아봅시다!<br>
-           Autowired를 통해서 정의한 ApplicationContext의 UserDao를 주입받기!
-        </BlockQuote>
-    </li>
 </ol>
 
