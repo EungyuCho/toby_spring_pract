@@ -11,10 +11,18 @@
         <property name="password" value="1234" />
     </bean>
 	
-	<bean id="userService" class="com.toby.pract1.UserService">
-		<property name="userDao" ref="userDao"></property>
-	</bean>
 	<bean id="userDao" class="com.toby.pract1.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<bean id="UserLevelUpgradePolicy" class="com.toby.pract1.UserLevelUpgradePolicyBtype">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	
+	<bean id="userService" class="com.toby.pract1.UserService">
+		<property name="userDao" ref="userDao"></property>
+		<property name="UserLevelUpgradePolicy" ref="UserLevelUpgradePolicy"></property>
+	</bean>
+	
+	
 </beans>
