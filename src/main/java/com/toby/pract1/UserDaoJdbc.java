@@ -54,4 +54,12 @@ public class UserDaoJdbc implements UserDao{
 	public int getCount(){
 		return this.jdbcTemplate.queryForInt("select count(*) from users");
 	}
+
+
+	public void update(User user) {
+		this.jdbcTemplate.update(
+				"update users set name = ?, password = ?, login = ?, level = ?"
+				+ ",recommend = ? where id = ?",user.getName(), user.getPassword(),
+				user.getLogin(), user.getLevel().intValue(),user.getRecommend(), user.getId());
+	}
 }
