@@ -17,7 +17,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/test-applicationContext.xml")
@@ -30,9 +29,9 @@ public class UserDaoJdbcTest {
 	private User user3;
 	@Before
 	public void setUp() {
-		this.user1 = new User("gyumee", "박성철", "springno1");
-		this.user2 = new User("leegw700", "이길원", "springno2");
-		this.user3 = new User("bumjin", "박범진", "springno3");
+		this.user1 = new User("gyumee", "박성철", "springno1", Level.BASIC, 1, 0);
+		this.user2 = new User("leegw700", "이길원", "springno2", Level.SILVER, 55, 10);
+		this.user3 = new User("bumjin", "박범진", "springno3", Level.GOLD, 100, 40);
 	}
 	@Test(expected = DuplicateKeyException.class)
 	public void duplicateKey() {
@@ -53,13 +52,9 @@ public class UserDaoJdbcTest {
 		assertThat(dao.getCount(), is(2));
 		
 		User userGet1 = dao.get(user1.getId());
+		checkSameUser(userGet1, user1);
 		User userGet2 = dao.get(user2.getId());
-
-		assertThat(userGet1.getName(), is(user1.getName()));
-		assertThat(userGet1.getPassword(), is(user1.getPassword()));
-		
-		assertThat(userGet2.getName(), is(user2.getName()));
-		assertThat(userGet2.getPassword(), is(user2.getPassword()));
+		checkSameUser(userGet2, user2);		
 	}
 	
 	@Test
@@ -118,5 +113,9 @@ public class UserDaoJdbcTest {
 		assertThat(user1.getId(), is(user2.getId()));
 		assertThat(user1.getName(), is(user2.getName()));
 		assertThat(user1.getPassword(), is(user2.getPassword()));
+		assertThat(user1.getLevel(), is(user2.getLevel()));
+		assertThat(user1.getLogin(), is(user2.getLogin()));
+		assertThat(user1.getRecommend(), is(user2.getRecommend()));
+		
 	}
 }
