@@ -13,7 +13,7 @@
         <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one3.md">템플릿</a>
     </li>
     <li>
-        예외
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one4.md">예외</a>
     </li>
     <li>
         서비스 추상화
