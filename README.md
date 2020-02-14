@@ -4,13 +4,13 @@
 <h2>Vol. 1 스프링 이해와 원리</h2>
 <ol>
     <li>
-        오브젝트와 의존관계
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one1.md">오브젝트와 의존관계</a>
     </li>
     <li>
-        테스트
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one2.md">테스트</a>
     </li>
     <li>
-        템플릿
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one3.md">템플릿</a>
     </li>
     <li>
         예외
