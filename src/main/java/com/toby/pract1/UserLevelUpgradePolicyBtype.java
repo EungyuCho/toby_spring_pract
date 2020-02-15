@@ -1,12 +1,12 @@
 package com.toby.pract1;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserLevelUpgradePolicyBtype implements UserLevelUpgradePolicy{
 	
-	public static int MIN_LOGCOUNT_FOR_SILVER = 50;
-	public static int MIN_RECCOMEND_FOR_GOLD = 30;
+	public static int MIN_LOGCOUNT_FOR_SILVER = 40;
+	public static int MIN_RECCOMEND_FOR_GOLD = 20;
 	UserDao userDao;
+	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
@@ -36,6 +36,4 @@ public class UserLevelUpgradePolicyBtype implements UserLevelUpgradePolicy{
 	public int getMinRecommendCountForGold() {
 		return MIN_RECCOMEND_FOR_GOLD;
 	}
-	
-
 }

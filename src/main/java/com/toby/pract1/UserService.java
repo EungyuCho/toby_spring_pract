@@ -12,6 +12,8 @@ public class UserService {
 	}
 	public void setUserLevelUpgradePolicy(UserLevelUpgradePolicy userLevelUpgradePolicy) {
 		this.userLevelUpgradePolicy = userLevelUpgradePolicy;
+		MIN_LOGCOUNT_FOR_SILVER = userLevelUpgradePolicy.getMinLogcountForSilver();
+		MIN_RECCOMEND_FOR_GOLD = userLevelUpgradePolicy.getMinRecommendCountForGold();
 	}
 	public void upgradeLevels() {
 		List<User> users = userDao.getAll();

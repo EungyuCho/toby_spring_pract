@@ -50,31 +50,12 @@ public class UserServiceTest {
 
 		
 		userService.upgradeLevels();
-
-
-		assertThat(users.get(0).getLevel(), is(Level.BASIC));
-		assertThat(users.get(1).getLevel(), is(Level.BASIC));
-		assertThat(users.get(2).getLevel(), is(Level.SILVER));
-		assertThat(users.get(3).getLevel(), is(Level.SILVER));
-		assertThat(users.get(4).getLevel(), is(Level.GOLD));
 		
-		assertThat(userDao.get(users.get(0).getId()).getLevel(), is(Level.SILVER));
-		assertThat(userDao.get(users.get(1).getId()).getLevel(), is(Level.SILVER));
-		assertThat(userDao.get(users.get(2).getId()).getLevel(), is(Level.GOLD));
-		assertThat(userDao.get(users.get(3).getId()).getLevel(), is(Level.GOLD));
-		assertThat(userDao.get(users.get(4).getId()).getLevel(), is(Level.GOLD));
-		
-		checkLevelUpgrade(users.get(0), true);
+		checkLevelUpgrade(users.get(0), false);
 		checkLevelUpgrade(users.get(1), true);
-		checkLevelUpgrade(users.get(2), true);
+		checkLevelUpgrade(users.get(2), false);
 		checkLevelUpgrade(users.get(3), true);
 		checkLevelUpgrade(users.get(4), false);
-		
-//		checkLevelUpgrade(users.get(0), false);
-//		checkLevelUpgrade(users.get(1), true);
-//		checkLevelUpgrade(users.get(2), false);
-//		checkLevelUpgrade(users.get(3), true);
-//		checkLevelUpgrade(users.get(4), false);
 	}
 	
 	@Test

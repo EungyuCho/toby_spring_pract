@@ -4,13 +4,20 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
+	 <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=UTC" />
+        <property name="username" value="root" />
+        <property name="password" value="5180" />
+    </bean>
+    <!-- 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://127.0.0.1:3306/testdb" />
         <property name="username" value="root" />
         <property name="password" value="1234" />
     </bean>
-	
+	 -->
 	<bean id="userDao" class="com.toby.pract1.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
 	</bean>

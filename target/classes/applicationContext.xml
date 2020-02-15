@@ -6,10 +6,18 @@
 	
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=UTC" />
+        <property name="username" value="root" />
+        <property name="password" value="5180" />
+    </bean>
+
+
+<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://127.0.0.1:3306/mydb" />
         <property name="username" value="root" />
         <property name="password" value="1234" />
-    </bean>
+    </bean> -->    
     
 	<bean id="connectionMaker" class="com.toby.pract1.DConnectionMaker" />
 	
