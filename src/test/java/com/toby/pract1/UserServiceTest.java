@@ -3,15 +3,23 @@ package com.toby.pract1;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.toby.pract1.UserServiceTest.TestUserService.TestUserServiceException;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/test-applicationContext.xml")
@@ -20,12 +28,34 @@ public class UserServiceTest {
 	UserService userService;
 	@Autowired
 	private UserDaoJdbc userDao;
+	@Autowired
+	DataSource dataSource;
 	List<User> users;
 	User user;
 	@Autowired
 	UserLevelUpgradePolicyBtype userLevelUpgradePolicy;
 	private static int MIN_LOGCOUNT_FOR_SILVER;
 	private static int MIN_RECCOMEND_FOR_GOLD;
+	
+	static class TestUserService extends UserService{
+		private String id;
+		
+		static class TestUserServiceException extends RuntimeException{
+			
+		}
+		
+		private TestUserService(String id) {
+			this.id = id;
+		}
+		
+		@Override
+		protected void upgradeLevel(User user) {
+			if(user.getId().equals(this.id)) throw new TestUserServiceException();
+			super.upgradeLevel(user);
+		}
+	}
+	
+	
 	@Before
 	public void setUp() {
 		MIN_LOGCOUNT_FOR_SILVER = userLevelUpgradePolicy.getMinLogcountForSilver();
@@ -43,7 +73,8 @@ public class UserServiceTest {
 	
 	
 	@Test
-	public void upgradeLevels() {
+	@Ignore
+	public void upgradeLevels() throws Exception {
 		userDao.deleteAll();
 		
 		for(User user: users) userDao.add(user);
@@ -83,6 +114,22 @@ public class UserServiceTest {
 		}else {
 			assertThat(userUpdate.getLevel(), is(user.getLevel()));
 		}
+	}
+	@Test
+	public void upgradeAllOrNothing() throws Exception {
+		UserService testUserService = new TestUserService(users.get(3).getId());
+		testUserService.setUserDao(this.userDao);
+		testUserService.setDataSource(this.dataSource);
+		userDao.deleteAll();
+		for(User user : users) userDao.add(user);
+		try {
+			testUserService.upgradeLevels();
+			fail("TestUserServiceException expected");
+		}catch(TestUserServiceException e) {
+			
+		}
+		
+		checkLevelUpgrade(users.get(1), false);
 	}
 
 }
