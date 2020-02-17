@@ -6,15 +6,23 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public class UserService {
 	UserDao userDao;
 	UserLevelUpgradePolicy userLevelUpgradePolicy;
+	
 	public static int MIN_LOGCOUNT_FOR_SILVER;
 	public static int MIN_RECCOMEND_FOR_GOLD;
 	private DataSource dataSource;
+	private PlatformTransactionManager transactionManager;
 	
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
+	}
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -27,9 +35,9 @@ public class UserService {
 		MIN_RECCOMEND_FOR_GOLD = userLevelUpgradePolicy.getMinRecommendCountForGold();
 	}
 	public void upgradeLevels() throws Exception{
-		TransactionSynchronizationManager.initSynchronization();
-		Connection c = DataSourceUtils.getConnection(dataSource);
-		c.setAutoCommit(false);
+		TransactionStatus status =
+				this.transactionManager.getTransaction(
+						new DefaultTransactionDefinition());
 		try {
 			List<User> users = userDao.getAll();
 			for(User user : users) {
@@ -37,14 +45,10 @@ public class UserService {
 					upgradeLevel(user);
 				}
 			}
-			c.commit();
+			this.transactionManager.commit(status);
 		}catch(Exception e) {
-			c.rollback();
+			this.transactionManager.rollback(status);
 			throw e;
-		}finally {
-			DataSourceUtils.releaseConnection(c, dataSource);
-			TransactionSynchronizationManager.unbindResource(this.dataSource);
-			TransactionSynchronizationManager.clearSynchronization();
 		}
 	}
 	

@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.toby.pract1.UserServiceTest.TestUserService.TestUserServiceException;
 
@@ -30,6 +31,8 @@ public class UserServiceTest {
 	private UserDaoJdbc userDao;
 	@Autowired
 	DataSource dataSource;
+	@Autowired
+	PlatformTransactionManager transactionManager;
 	List<User> users;
 	User user;
 	@Autowired
@@ -73,7 +76,6 @@ public class UserServiceTest {
 	
 	
 	@Test
-	@Ignore
 	public void upgradeLevels() throws Exception {
 		userDao.deleteAll();
 		
@@ -118,8 +120,8 @@ public class UserServiceTest {
 	@Test
 	public void upgradeAllOrNothing() throws Exception {
 		UserService testUserService = new TestUserService(users.get(3).getId());
-		testUserService.setUserDao(this.userDao);
-		testUserService.setDataSource(this.dataSource);
+		testUserService.setUserDao(userDao);
+		testUserService.setTransactionManager(transactionManager);
 		userDao.deleteAll();
 		for(User user : users) userDao.add(user);
 		try {
