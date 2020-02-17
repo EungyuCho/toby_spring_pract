@@ -127,6 +127,25 @@
 			<version>1.2</version>
 		</dependency>
 	
+		<!-- customAdded -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>3.0.7.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javax.activation</groupId>
+		    <artifactId>activation</artifactId>
+		    <version>1.1</version>
+		</dependency>
+				
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4.7</version>
+		</dependency>
+			
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
