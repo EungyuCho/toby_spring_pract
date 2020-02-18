@@ -25,6 +25,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
 
+import Mock.MockMailSender;
+import Mock.MockUserDao;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/test-applicationContext.xml")
@@ -86,25 +89,19 @@ public class UserServiceITest {
 	@Test
 	@DirtiesContext
 	public void upgradeLevels() throws Exception {
-		userDao.deleteAll();
-		
-		for(User user: users) userDao.add(user);
+		UserServiceImpl userServiceImpl = new UserServiceImpl();
+		MockUserDao mockUserDao = new MockUserDao(this.users);
+		userServiceImpl.setUserDao(mockUserDao);
 
 		MockMailSender mockMailsender = new MockMailSender();
 		userServiceImpl.setMailSender(mockMailsender);
 		
-		userService.upgradeLevels();
+		userServiceImpl.upgradeLevels();
 		
-		checkLevelUpgrade(users.get(0), false);
-		checkLevelUpgrade(users.get(1), true);
-		checkLevelUpgrade(users.get(2), false);
-		checkLevelUpgrade(users.get(3), true);
-		checkLevelUpgrade(users.get(4), false);
-		
-		List<String> request = mockMailsender.getRequests();
-		assertThat(request.size(), is(2));
-		assertThat(request.get(0), is(users.get(1).getEmail()));
-		assertThat(request.get(1), is(users.get(3).getEmail()));
+		List<User> updated = mockUserDao.getUpdated();
+		assertThat(updated.size(), is(2));
+		checkUserAndLevel(updated.get(0), "joytouch", Level.SILVER);
+		checkUserAndLevel(updated.get(1), "madnite1", Level.GOLD);
 		
 	}
 	@Test
@@ -126,7 +123,11 @@ public class UserServiceITest {
 		
 		
 	}
-	
+
+	private void checkUserAndLevel(User updated, String experctedId, Level expectedLevel) {
+		assertThat(updated.getId(), is(experctedId));
+		assertThat(updated.getLevel(), is(expectedLevel));
+	}
 	private void checkLevelUpgrade(User user, boolean upgraded) {
 		User userUpdate = userDao.get(user.getId());
 		if(upgraded) {

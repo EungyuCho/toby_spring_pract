@@ -31,6 +31,7 @@ public class UserLevelUpgradePolicyAtype implements UserLevelUpgradePolicy{
 	public int getMinLogcountForSilver() {
 		return MIN_LOGCOUNT_FOR_SILVER;
 	}
+	
 
 	@Override
 	public int getMinRecommendCountForGold() {

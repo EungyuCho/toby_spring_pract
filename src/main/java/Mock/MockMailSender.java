@@ -1,4 +1,4 @@
-package com.toby.pract1;
+package Mock;
 
 import java.util.ArrayList;
 import java.util.List;
