@@ -19,6 +19,7 @@ public class UserService {
 	private PlatformTransactionManager transactionManager;
 	private MailSender mailSender;
 	
+	
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;
 	}
