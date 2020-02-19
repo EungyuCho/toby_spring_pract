@@ -25,23 +25,23 @@
 		<property name="userDao" ref="userDao"></property>
 	</bean>
 	
-	<bean id="tranactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
     <bean id="mailSender" class="com.toby.pract1.DummyMailSender">
     </bean>
 	
-	<bean id="userService" class="com.toby.pract1.UserServiceTx">
-		<property name="tranactionManager" ref="tranactionManager" />
-		<property name="userService" ref="userServiceImpl"/>
-	</bean>
 	<bean id="userServiceImpl" class="com.toby.pract1.UserServiceImpl">
 		<property name="userDao" ref="userDao" />
 		<property name="UserLevelUpgradePolicy" ref="UserLevelUpgradePolicy" />
 		<property name="mailSender" ref="mailSender" />
 	</bean>
 	
-	
-	
+	<bean id="userService" class="Factory.TxProxyFactoryBean">
+		<property name="target" ref="userServiceImpl" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="pattern" value="upgradeLevels" />
+		<property name="serviceInterface" value="com.toby.pract1.UserService" />
+	</bean>	
 </beans>

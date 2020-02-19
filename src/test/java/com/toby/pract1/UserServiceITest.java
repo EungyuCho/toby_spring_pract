@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailMessage;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,8 +30,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
 
-import Mock.MockMailSender;
-import Mock.MockUserDao;
+import Bean.User;
+import Factory.MessageFactoryBean;
+import Factory.TxProxyFactoryBean;
+import Handler.TransactionHandler;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,6 +55,8 @@ public class UserServiceITest {
 	User user;
 	@Autowired
 	UserLevelUpgradePolicyBtype userLevelUpgradePolicy;
+	@Autowired
+	ApplicationContext context;
 	private static int MIN_LOGCOUNT_FOR_SILVER;
 	private static int MIN_RECCOMEND_FOR_GOLD;
 	public void setMailSender(MailSender mailSender) {
@@ -118,25 +124,6 @@ public class UserServiceITest {
 	}
 	
 	@Test
-	@DirtiesContext
-	public void upgradeLevels() throws Exception {
-		UserServiceImpl userServiceImpl = new UserServiceImpl();
-		
-		MockUserDao mockUserDao = new MockUserDao(this.users);
-		userServiceImpl.setUserDao(mockUserDao);
-
-		MockMailSender mockMailsender = new MockMailSender();
-		userServiceImpl.setMailSender(mockMailsender);
-		
-		userServiceImpl.upgradeLevels();
-		
-		List<User> updated = mockUserDao.getUpdated();
-		assertThat(updated.size(), is(2));
-		checkUserAndLevel(updated.get(0), "joytouch", Level.SILVER);
-		checkUserAndLevel(updated.get(1), "madnite1", Level.GOLD);
-		
-	}
-	@Test
 	public void add() {
 		userDao.deleteAll();
 
@@ -169,18 +156,27 @@ public class UserServiceITest {
 		}
 	}
 	@Test
+	@DirtiesContext
 	public void upgradeAllOrNothing() throws Exception {
-		UserServiceImpl testUserService = new TestUserService(users.get(3).getId());
+		TestUserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(userDao);
 		testUserService.setMailSender(mailSender);
 		
-		UserServiceTx txUserService = new UserServiceTx();
-		txUserService.setTranactionManager(transactionManager);
-		txUserService.setUserService(testUserService);
 		
+		TxProxyFactoryBean txProxyFactoryBean = 
+				context.getBean("&userService", TxProxyFactoryBean.class);
+		txProxyFactoryBean.setTarget(testUserService);
+		
+//		TransactionHandler txHandler = new TransactionHandler();
+//		txHandler.setTarget(testUserService);
+//		txHandler.setTranactionManager(transactionManager);
+//		txHandler.setPattern("upgradeLevels");
+		
+		UserService txUserService = 
+//				(UserService)Proxy.newProxyInstance(getClass().getClassLoader(),new Class[] {UserService.class} , txHandler);
+				(UserService) txProxyFactoryBean.getObject();
 		userDao.deleteAll();
 		for(User user : users) userDao.add(user);
-		
 		try {
 			txUserService.upgradeLevels();
 			fail("TestUserServiceException expected");
@@ -189,4 +185,5 @@ public class UserServiceITest {
 		}
 		checkLevelUpgrade(users.get(1), false);
 	}
+	
 }

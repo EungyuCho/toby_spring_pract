@@ -1,5 +1,6 @@
 package com.toby.pract1;
 
+import Bean.User;
 
 public class UserLevelUpgradePolicyBtype implements UserLevelUpgradePolicy{
 	

@@ -10,6 +10,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import Bean.User;
+
 public class UserServiceImpl implements UserService{
 	UserDao userDao;
 	UserLevelUpgradePolicy userLevelUpgradePolicy;

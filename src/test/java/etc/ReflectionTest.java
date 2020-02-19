@@ -8,6 +8,8 @@ import java.lang.reflect.Proxy;
 
 import org.junit.Test;
 
+import Handler.UppercaseHandler;
+
 public class ReflectionTest {
 	@Test
 	public void invokeMethod() throws Exception{
@@ -45,4 +47,5 @@ public class ReflectionTest {
 		assertThat(proxiedHelloReflect.saythankYou("Toby"), is("THANK YOU TOBY"));
 		
 	}
+	
 }

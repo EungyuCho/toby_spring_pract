@@ -6,6 +6,8 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import Bean.User;
+
 public class UserTest {
 	User user;
 	
