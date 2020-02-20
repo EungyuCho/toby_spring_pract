@@ -3,6 +3,9 @@ package etc;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -32,7 +35,7 @@ public class ReflectionTest {
 		assertThat(hello.sayHello("Toby"), is("Hello Toby"));
 		assertThat(hello.sayHi("Toby"), is("Hi Toby"));
 		assertThat(hello.saythankYou("Toby"), is("Thank You Toby"));
-
+		
 		Hello proxiedHello = new HelloUppercase(new HelloTarget());
 		assertThat(proxiedHello.sayHello("Toby"), is("HELLO TOBY"));
 		assertThat(proxiedHello.sayHi("Toby"), is("HI TOBY"));
