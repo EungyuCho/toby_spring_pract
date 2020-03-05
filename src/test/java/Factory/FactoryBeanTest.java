@@ -1,6 +1,7 @@
 package Factory;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -21,14 +22,16 @@ public class FactoryBeanTest {
 	@Test
 	public void getMessageFromFactoryBean() {
 		Object message = context.getBean("message");
-//		assertThat(message, is(Message.class));
 		assertThat(((Message)message).getText(), is("Factory Bean"));
 	}
 	
 	
 	@Test
 	public void getFactoryBean() throws Exception{
-		Object factory = context.getBean("&message");
-//		assertThat(factory, is(MessageFactoryBean.class));
+		Object factory = context.getBean("message");
+		assertEquals(factory.getClass(), Message.class);
+		
+		factory = context.getBean("&message");
+		assertEquals(factory.getClass(), MessageFactoryBean.class);
 	}
 }
