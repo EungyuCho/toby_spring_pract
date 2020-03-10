@@ -21,5 +21,4 @@ public class UppercaseHandler implements InvocationHandler{
 			return ret;
 		}
 	}
-
 }

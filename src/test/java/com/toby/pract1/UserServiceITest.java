@@ -2,10 +2,14 @@ package com.toby.pract1;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -30,7 +34,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
+import com.toby.pract1.UserServiceITest.TestUserServiceImpl.TestUserServiceException;
 
 import Bean.User;
 import Factory.MessageFactoryBean;
@@ -44,7 +48,7 @@ public class UserServiceITest {
 	@Autowired
 	UserService userService;
 	@Autowired
-	UserServiceImpl userServiceImpl;
+	UserService testUserService;
 	@Autowired
 	private UserDaoJdbc userDao;
 	@Autowired
@@ -64,17 +68,12 @@ public class UserServiceITest {
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;
 	}
-	static class TestUserService extends UserServiceImpl{
-		private String id;
+	static class TestUserServiceImpl extends UserServiceImpl{
+		private String id = "madnite1";
 		
 		static class TestUserServiceException extends RuntimeException{
 			
 		}
-		
-		private TestUserService(String id) {
-			this.id = id;
-		}
-		
 		@Override
 		protected void upgradeLevel(User user) {
 			if(user.getId().equals(this.id)) throw new TestUserServiceException();
@@ -160,27 +159,10 @@ public class UserServiceITest {
 	@Test
 	@DirtiesContext
 	public void upgradeAllOrNothing() throws Exception {
-		TestUserService testUserService = new TestUserService(users.get(3).getId());
-		testUserService.setUserDao(userDao);
-		testUserService.setMailSender(mailSender);
-		
-		
-		ProxyFactoryBean txProxyFactoryBean = 
-				context.getBean("&userService", ProxyFactoryBean.class);
-		txProxyFactoryBean.setTarget(testUserService);
-		
-//		TransactionHandler txHandler = new TransactionHandler();
-//		txHandler.setTarget(testUserService);
-//		txHandler.setTranactionManager(transactionManager);
-//		txHandler.setPattern("upgradeLevels");
-		
-		UserService txUserService = 
-//				(UserService)Proxy.newProxyInstance(getClass().getClassLoader(),new Class[] {UserService.class} , txHandler);
-				(UserService) txProxyFactoryBean.getObject();
 		userDao.deleteAll();
 		for(User user : users) userDao.add(user);
 		try {
-			txUserService.upgradeLevels();
+			this.testUserService.upgradeLevels();
 			fail("TestUserServiceException expected");
 		}catch(TestUserServiceException e) {
 			
