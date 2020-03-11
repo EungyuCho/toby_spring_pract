@@ -36,6 +36,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.toby.pract1.UserServiceITest.TestUserServiceImpl.TestUserServiceException;
 
@@ -209,7 +210,6 @@ public class UserServiceITest {
 		assertThat(pointcut.getClassFilter().matches(Bean.class) &&
 				pointcut.getMethodMatcher().matches(Target.class.getMethod("method"), null), is(false));
 	}
-
 	@Test
 	public void pointcut() throws Exception{
 		targetClassPointcutMatches("execution(* * (..))", true, true, true, true, true, true);

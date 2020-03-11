@@ -22,9 +22,8 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<bean id="transactionPointcut" class="Advice.NameMatchClassMethodPointcut">
-		<property name="mappedClassName" value="*ServiceImpl" />
-		<property name="mappedName" value="upgrade*" />
+	<bean id="transactionPointcut" class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
+		<property name="expression" value="execution(* *..*ServiceImpl.upgrade*(..)))" />
 	</bean>
 	
 	<bean id="transactionAdvice" class="Advice.TransactionAdvice">
