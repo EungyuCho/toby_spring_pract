@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Proxy;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailMessage;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -38,7 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.toby.pract1.UserServiceITest.TestUserServiceImpl.TestUserServiceException;
+import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
 
 import Bean.Bean;
 import Bean.User;
@@ -74,7 +76,7 @@ public class UserServiceITest {
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;
 	}
-	static class TestUserServiceImpl extends UserServiceImpl{
+	static class TestUserService extends UserServiceImpl{
 		private String id = "madnite1";
 		
 		static class TestUserServiceException extends RuntimeException{
@@ -84,6 +86,13 @@ public class UserServiceITest {
 		protected void upgradeLevel(User user) {
 			if(user.getId().equals(this.id)) throw new TestUserServiceException();
 			super.upgradeLevel(user);
+		}
+		@Override
+		public List<User> getAll(){
+			for(User user: super.getAll()) {
+				super.update(user);
+			}
+			return null;
 		}
 	}
 	
@@ -224,5 +233,10 @@ public class UserServiceITest {
 		targetClassPointcutMatches("execution(* hello (..))", true, true, false, false, false, false);
 		targetClassPointcutMatches("execution(* meth* (..))", false, false, false, false, true, true);
 		targetClassPointcutMatches("execution(* * (..) throws Runtime*)", false, false, false, true, false, true);
+	}
+	
+	@Test(expected = TransientDataAccessResourceException.class)
+	public void readOnlyTransactionAttribute() {
+		testUserService.getAll();
 	}
 }
