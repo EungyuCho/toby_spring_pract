@@ -29,16 +29,22 @@ import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Role;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailMessage;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.NotTransactional;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
 
@@ -52,6 +58,8 @@ import Pointcut.Target;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/test-applicationContext.xml")
+@Transactional
+@TransactionConfiguration(defaultRollback = false)
 public class UserServiceITest {
 	@Autowired
 	UserService userService;
@@ -111,6 +119,7 @@ public class UserServiceITest {
 	}
 
 	@Test
+	@Ignore
 	public void mockUpgradeLevels() throws Exception{
 		UserServiceImpl userServiceImpl = new UserServiceImpl();
 		
@@ -140,9 +149,9 @@ public class UserServiceITest {
 	}
 	
 	@Test
+	@Rollback
 	public void add() {
-		userDao.deleteAll();
-
+		
 		User userWithLevel = users.get(4);
 		User userWithoutLevel = users.get(0);
 		userWithoutLevel.setLevel(null);
@@ -173,8 +182,8 @@ public class UserServiceITest {
 	}
 	@Test
 	@DirtiesContext
+	@Transactional(readOnly = false)
 	public void upgradeAllOrNothing() throws Exception {
-		userDao.deleteAll();
 		for(User user : users) userDao.add(user);
 		try {
 			this.testUserService.upgradeLevels();
@@ -234,9 +243,19 @@ public class UserServiceITest {
 		targetClassPointcutMatches("execution(* meth* (..))", false, false, false, false, true, true);
 		targetClassPointcutMatches("execution(* * (..) throws Runtime*)", false, false, false, true, false, true);
 	}
-	
+	// transactional 동작 순서 : Target Method -> Target class -> Type Method -> Type Interface
 	@Test(expected = TransientDataAccessResourceException.class)
+	@Rollback(false)
 	public void readOnlyTransactionAttribute() {
 		testUserService.getAll();
 	}
+	
+	@Test
+	@Rollback
+	public void transactionSync() {
+		userService.deleteAll();
+		userService.add(users.get(0));
+		userService.add(users.get(1));
+	}
+	
 }
