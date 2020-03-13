@@ -15,9 +15,19 @@ import Bean.User;
 public class UserDaoJdbc implements UserDao{
 	
 	private JdbcTemplate jdbcTemplate;
+	private String sqlAdd;
+	private String sqlUpdate;
 	
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+
+	public void setSqlAdd(String sqlAdd) {
+		this.sqlAdd = sqlAdd;
+	}
+	
+	public void setSqlUpdate(String sqlUpdate) {
+		this.sqlUpdate = sqlUpdate;
 	}
 	
 	private RowMapper<User> userMapper = 
@@ -37,8 +47,9 @@ public class UserDaoJdbc implements UserDao{
 			};
 	
 	public void add(final User user) {
-		this.jdbcTemplate.update("insert into users(id, name, password, email, level, login, recommend) values(?,?,?,?,?,?,?)",
-				user.getId(), user.getName(), user.getPassword(), user.getEmail(), user.getLevel().intValue(), user.getLogin(), user.getRecommend());
+		this.jdbcTemplate.update(
+				this.sqlAdd, user.getId(), user.getName(), user.getPassword(), user.getEmail(),
+				 user.getLevel().intValue(), user.getLogin(),user.getRecommend());
 	}
 	
 	
@@ -61,8 +72,7 @@ public class UserDaoJdbc implements UserDao{
 
 	public void update(User user) {
 		this.jdbcTemplate.update(
-				"update users set name = ?, password = ?, email=?, login = ?, level = ?"
-				+ ",recommend = ? where id = ?",user.getName(), user.getPassword(), user.getEmail(),
-				user.getLogin(), user.getLevel().intValue(),user.getRecommend(), user.getId());
+				this.sqlUpdate, user.getName(), user.getPassword(),
+				 user.getLevel().intValue(), user.getLogin(),user.getRecommend(), user.getId());
 	}
 }

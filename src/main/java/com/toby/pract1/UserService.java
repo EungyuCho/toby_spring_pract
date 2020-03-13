@@ -10,6 +10,7 @@ import Bean.User;
 @Transactional
 public interface UserService {
 	void add(User user);
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	void deleteAll();
 	void update(User user);
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)

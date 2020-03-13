@@ -1,10 +1,6 @@
 package com.toby.pract1;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -13,46 +9,34 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.lang.reflect.Proxy;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.framework.ProxyFactoryBean;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Role;
 import org.springframework.dao.TransientDataAccessResourceException;
-import org.springframework.mail.MailMessage;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.NotTransactional;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
-
 import Bean.Bean;
 import Bean.User;
-import Factory.MessageFactoryBean;
-import Factory.TxProxyFactoryBean;
-import Handler.TransactionHandler;
 import Pointcut.Target;
 
 
@@ -119,7 +103,7 @@ public class UserServiceITest {
 	}
 
 	@Test
-	@Ignore
+	@Rollback
 	public void mockUpgradeLevels() throws Exception{
 		UserServiceImpl userServiceImpl = new UserServiceImpl();
 		
@@ -151,7 +135,6 @@ public class UserServiceITest {
 	@Test
 	@Rollback
 	public void add() {
-		
 		User userWithLevel = users.get(4);
 		User userWithoutLevel = users.get(0);
 		userWithoutLevel.setLevel(null);
@@ -164,8 +147,6 @@ public class UserServiceITest {
 
 		assertThat(userWithLevelRead.getLevel(), is(userWithLevel.getLevel()));
 		assertThat(userWithoutLevelRead.getLevel(), is(userWithoutLevel.getLevel()));
-		
-		
 	}
 
 	private void checkUserAndLevel(User updated, String experctedId, Level expectedLevel) {
@@ -182,9 +163,11 @@ public class UserServiceITest {
 	}
 	@Test
 	@DirtiesContext
-	@Transactional(readOnly = false)
+	@Transactional(propagation = Propagation.NEVER, isolation = Isolation.SERIALIZABLE)
 	public void upgradeAllOrNothing() throws Exception {
-		for(User user : users) userDao.add(user);
+		assertThat(userService.getAll().size(), is(0));
+		for(User user : users) userService.add(user);
+		assertThat(userService.getAll().size(), is(5));
 		try {
 			this.testUserService.upgradeLevels();
 			fail("TestUserServiceException expected");
@@ -193,6 +176,7 @@ public class UserServiceITest {
 		}
 		checkLevelUpgrade(userDao.get("madnite1"), false);
 		checkLevelUpgrade(users.get(3), false);
+		userService.deleteAll();
 	}
 	
 	public void pointcutMatches(String expression, Boolean expected, Class<?> clazz, String methodName, Class<?>... args) throws Exception{
@@ -245,9 +229,27 @@ public class UserServiceITest {
 	}
 	// transactional 동작 순서 : Target Method -> Target class -> Type Method -> Type Interface
 	@Test(expected = TransientDataAccessResourceException.class)
-	@Rollback(false)
+	@Transactional(propagation = Propagation.NEVER)
 	public void readOnlyTransactionAttribute() {
+		for(User user: users) 
+			testUserService.add(user);
+		
 		testUserService.getAll();
+		assertThat(userService.getAll().size(), is(5));
+		userService.deleteAll();
+		assertThat(userService.getAll().size(), is(0));
+		
+	}
+	
+	@Test
+	@Ignore
+	public void deleteTest() {
+		for(User user: users) 
+			testUserService.add(user);
+		assertThat(userService.getAll().size(), is(5));
+		testUserService.deleteAll();
+		assertThat(userService.getAll().size(), is(0));
+		
 	}
 	
 	@Test
