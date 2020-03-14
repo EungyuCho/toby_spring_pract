@@ -9,10 +9,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOError;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -38,6 +44,8 @@ import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException
 import Bean.Bean;
 import Bean.User;
 import Pointcut.Target;
+import sqlService.jaxb.SqlType;
+import sqlService.jaxb.Sqlmap;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -258,6 +266,26 @@ public class UserServiceITest {
 		userService.deleteAll();
 		userService.add(users.get(0));
 		userService.add(users.get(1));
+	}
+	
+	@Test
+	public void readSqlmap() throws JAXBException, IOException{
+		String contextPath = Sqlmap.class.getPackage().getName();
+		JAXBContext context = JAXBContext.newInstance(contextPath);
+		InputStream is = UserDao.class.getResourceAsStream("sqlmap.xml");
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		
+		
+		Sqlmap sqlmap = (Sqlmap) unmarshaller.unmarshal(is);
+		
+		List<SqlType> sqlList = sqlmap.getSql();
+		
+		assertThat(sqlList.size(), is(6));
+		assertThat(sqlList.get(0).getKey(), is("userAdd"));
+		assertThat(sqlList.get(3).getKey(), is("userDeleteAll"));
+		assertThat(sqlList.get(5).getKey(), is("userUpdate"));
+		assertThat(sqlList.get(5).getValue(), is("update users set name = ?, password = ?, level = ?, login = ?, recommend = ? where id = ?"));
+		
 	}
 	
 }
