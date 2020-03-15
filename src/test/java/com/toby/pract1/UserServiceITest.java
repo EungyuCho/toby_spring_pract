@@ -250,7 +250,7 @@ public class UserServiceITest {
 	}
 	
 	@Test
-	@Ignore
+	@Transactional(propagation = Propagation.NEVER)
 	public void deleteTest() {
 		for(User user: users) 
 			testUserService.add(user);

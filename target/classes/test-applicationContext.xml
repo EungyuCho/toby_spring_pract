@@ -17,14 +17,26 @@
         <property name="username" value="root" />
         <property name="password" value="5180" />
     </bean>
+    
 	<bean id="userDao" class="com.toby.pract1.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
 		<property name="sqlService" ref="sqlService" />
 	</bean>
 	
+	<bean id="sqlService" class="sqlService.DefaultSqlService" />
+	<!-- 
 	<bean id="sqlService" class="sqlService.XmlSqlService">
+		<property name="sqlReader" ref="sqlReader" />
+		<property name="sqlRegistry" ref="sqlRegistry" />
 		<property name="sqlmapFile" value="sqlmap.xml" />
 	</bean>
+	 -->
+	<bean id="sqlReader" class="sqlService.JaxbXmlSqlReader">
+		<property name="sqlmapFile" value="sqlmap.xml" />
+	</bean>
+	
+	<bean id="sqlRegistry" class="sqlService.HashMapSqlRegistry" />
+	
 	<bean id="UserLevelUpgradePolicy" class="com.toby.pract1.UserLevelUpgradePolicyBtype">
 		<property name="userDao" ref="userDao"></property>
 	</bean>
