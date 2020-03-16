@@ -5,6 +5,7 @@
 
 	<bean id="sqlService" class="sqlService.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller" />
+		<property name="sqlmap" value="com/toby/pract1/sqlmap.xml" />
 	</bean>
 	
 	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
