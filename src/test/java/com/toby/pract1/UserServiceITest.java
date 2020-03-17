@@ -44,6 +44,7 @@ import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException
 import Bean.Bean;
 import Bean.User;
 import Pointcut.Target;
+import sqlService.SqlService;
 import sqlService.jaxb.SqlType;
 import sqlService.jaxb.Sqlmap;
 
@@ -285,7 +286,20 @@ public class UserServiceITest {
 		assertThat(sqlList.get(3).getKey(), is("userDeleteAll"));
 		assertThat(sqlList.get(5).getKey(), is("userUpdate"));
 		assertThat(sqlList.get(5).getValue(), is("update users set name = ?, password = ?, level = ?, login = ?, recommend = ? where id = ?"));
+	}
+	
+	@Test
+	public void updateSqlmap() throws JAXBException, IOException{
+		String contextPath = Sqlmap.class.getPackage().getName();
+		JAXBContext context = JAXBContext.newInstance(contextPath);
+		InputStream is = UserDao.class.getResourceAsStream("sqlmap.xml");
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		
+		Sqlmap sqlmap = (Sqlmap) unmarshaller.unmarshal(is);
+		
+		
 		
 	}
+	
 	
 }

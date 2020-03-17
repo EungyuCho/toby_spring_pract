@@ -69,7 +69,7 @@ public class OxmSqlService implements SqlService{
 		@Override
 		public void read(SqlRegistry sqlRegistry) {
 			try {
-				Source source = new StreamSource(sqlmap.getInputStream());
+				Source source = new StreamSource(sqlmap.getInputStream()); 
 				Sqlmap sqlmap = (Sqlmap)this.unmarshaller.unmarshal(source);	
 				
 				for(SqlType sql : sqlmap.getSql())

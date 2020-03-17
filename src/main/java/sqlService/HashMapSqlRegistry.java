@@ -13,6 +13,10 @@ public class HashMapSqlRegistry implements SqlRegistry{
 		sqlMap.put(key, sql);
 	}
 
+	public void registerSql(Map<String, String> sqlmap) {
+		sqlMap.putAll(sqlmap);
+	}
+	
 	@Override
 	public String findSql(String key) throws SqlNotFoundException {
 		String sql = sqlMap.get(key);

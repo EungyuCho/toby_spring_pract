@@ -23,7 +23,6 @@
 		<property name="sqlService" ref="sqlService" />
 	</bean>
 	
-	<bean id="sqlService" class="sqlService.DefaultSqlService" />
 	<!-- 
 	<bean id="sqlService" class="sqlService.XmlSqlService">
 		<property name="sqlReader" ref="sqlReader" />
@@ -36,6 +35,8 @@
 	</bean>
 	
 	<bean id="sqlRegistry" class="sqlService.HashMapSqlRegistry" />
+	
+	<bean id="sqlService" class="sqlService.DefaultSqlService" />
 	
 	<bean id="UserLevelUpgradePolicy" class="com.toby.pract1.UserLevelUpgradePolicyBtype">
 		<property name="userDao" ref="userDao"></property>
