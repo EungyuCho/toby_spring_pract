@@ -12,6 +12,8 @@ import javax.xml.transform.stream.StreamSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.test.context.ContextConfiguration;
@@ -36,6 +38,6 @@ public class OrmTest {
 
 		assertThat(sqlList.get(1).getKey(), is("userGet"));
 		assertThat(sqlList.get(3).getValue(), is("delete from users"));
-		
 	}
+	
 }

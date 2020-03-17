@@ -34,9 +34,16 @@
 		<property name="sqlmapFile" value="sqlmap.xml" />
 	</bean>
 	
-	<bean id="sqlRegistry" class="sqlService.HashMapSqlRegistry" />
+	<bean id="sqlRegistry" class="sqlService.ConcurrentHashMapSqlRegistry" />
 	
-	<bean id="sqlService" class="sqlService.DefaultSqlService" />
+	<bean id="sqlService" class="sqlService.OxmSqlService">
+		<property name="unmarshaller" ref="unmarshaller" />
+		<property name="sqlRegistry" ref="sqlRegistry" />
+	</bean>
+	
+	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="sqlService.jaxb"></property>
+	</bean>
 	
 	<bean id="UserLevelUpgradePolicy" class="com.toby.pract1.UserLevelUpgradePolicyBtype">
 		<property name="userDao" ref="userDao"></property>

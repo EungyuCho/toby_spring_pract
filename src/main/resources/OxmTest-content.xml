@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<bean id="sqlRegistry" class="sqlService.ConcurrentHashMapSqlRegistry" />
+	
 	<bean id="sqlService" class="sqlService.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller" />
-		<property name="sqlmap" value="com/toby/pract1/sqlmap.xml" />
+		<property name="sqlRegistry" ref="sqlRegistry" />
 	</bean>
 	
 	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">

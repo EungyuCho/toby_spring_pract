@@ -38,21 +38,27 @@
 		    <artifactId>spring-jdbc</artifactId>
 		    <version>3.0.7.RELEASE</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/cglib/cglib -->
+		
+		<!-- ETC -->
 		<dependency>
 		    <groupId>cglib</groupId>
 		    <artifactId>cglib</artifactId>
 		    <version>3.3.0</version>
 		</dependency>
 				
-		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjtools -->
 		<dependency>
 		    <groupId>org.aspectj</groupId>
 		    <artifactId>aspectjtools</artifactId>
 		    <version>1.6.6</version>
 		</dependency>
+	
+		<dependency>
+		    <groupId>hsqldb</groupId>
+		    <artifactId>hsqldb</artifactId>
+		    <version>1.8.0.10</version>
+		    <scope>test</scope>
+		</dependency>
 
-		
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
