@@ -34,7 +34,9 @@
 		<property name="sqlmapFile" value="sqlmap.xml" />
 	</bean>
 	
-	<bean id="sqlRegistry" class="sqlService.ConcurrentHashMapSqlRegistry" />
+	<bean id="sqlRegistry" class="sqlService.embeddeddb.EmbeddedDbSqlRegistry">
+		<property name="dataSource" ref="embeddedDatabase"></property>
+	</bean>
 	
 	<bean id="sqlService" class="sqlService.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller" />
@@ -54,7 +56,7 @@
 	</bean>
 	
 	<jdbc:embedded-database id="embeddedDatabase" type="HSQL">
-		<jdbc:script location="classpath:sqlService/embeddeddb/schema.sql"/>
+		<jdbc:script location="classpath:sqlService/embeddeddb/sqlRegistryschema.sql"/>
 	</jdbc:embedded-database>
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
