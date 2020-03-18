@@ -1,4 +1,4 @@
-package com.toby.pract1;
+package com.toby.pract1.updatabledb;
 
 
 import static org.hamcrest.CoreMatchers.is;
@@ -15,23 +15,25 @@ import sqlService.SqlNotFoundException;
 import sqlService.issuetracker.SqlUpdateFailException;
 import sqlService.issuetracker.UpdatableSqlRegistry;
 
-public class ConcurrentHashMapSqlRegistryTest {
+public abstract class AbstractUpdatableSqlRegistryTest {
 	UpdatableSqlRegistry sqlRegistry;
 	
 	@Before
 	public void setUp() {
-		sqlRegistry = new ConcurrentHashMapSqlRegistry();
+		sqlRegistry = createUpdatableSqlRegistry();
 		sqlRegistry.registerSql("KEY1", "SQL1");
 		sqlRegistry.registerSql("KEY2", "SQL2");
 		sqlRegistry.registerSql("KEY3", "SQL3");
 	}
+	
+	abstract protected UpdatableSqlRegistry createUpdatableSqlRegistry();
 	
 	@Test
 	public void find() {
 		checkFindResult("SQL1", "SQL2", "SQL3");
 	}
 	
-	private void checkFindResult(String expected1, String expected2, String expected3) {
+	protected void checkFindResult(String expected1, String expected2, String expected3) {
 		assertThat(sqlRegistry.findSql("KEY1"), is(expected1));
 		assertThat(sqlRegistry.findSql("KEY2"), is(expected2));
 		assertThat(sqlRegistry.findSql("KEY3"), is(expected3));
