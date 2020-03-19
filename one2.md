@@ -1,6 +1,6 @@
 
 <h1>메인으로 돌아가기 <a href="https://github.com/EungyuCho/toby_spring_pract">></a></h1>
-<h2>2장 테스트</h2>
+<h2>2장 테스트🧪</h2>
 <ol>
     <li>
         <h4>테스트 검증의 자동화&nbsp&nbsp<a href="https://github.com/EungyuCho/toby_spring_pract/commit/5196411ec3dce9053ad06917b969887f23db7481">>></a></h4>

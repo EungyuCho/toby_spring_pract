@@ -1,6 +1,6 @@
 
 <h1>메인으로 돌아가기 <a href="https://github.com/EungyuCho/toby_spring_pract">></a></h1>
-<h2>4장 테스트</h2>
+<h2>4장 예외🧺</h2>
 <ol>
     <li>
         <h4>예외처리의 종류와 특징</h4>

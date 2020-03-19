@@ -1,6 +1,6 @@
 
 <h1>메인으로 돌아가기 <a href="https://github.com/EungyuCho/toby_spring_pract">></a></h1>
-<h2>1장 오브젝트와 의존관계</h2>
+<h2>1장 오브젝트와 의존관계🧲</h2>
 <ol>
     <li>
         <a href="https://github.com/EungyuCho/toby_spring_pract/commit/be04e8e5a559669ed58fff9861bc5afe71cac4d3">초난감 DAO</a>

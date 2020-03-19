@@ -18,6 +18,7 @@
         <property name="password" value="5180" />
     </bean>
     
+    
 	<bean id="userDao" class="com.toby.pract1.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
 		<property name="sqlService" ref="sqlService" />
@@ -61,7 +62,6 @@
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
-	<context:annotation-config />
 	
 	<!--
 	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">

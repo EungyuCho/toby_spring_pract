@@ -1,6 +1,6 @@
 
 <h1>메인으로 돌아가기 <a href="https://github.com/EungyuCho/toby_spring_pract">></a></h1>
-<h2>3장 템플릿</h2>
+<h2>3장 템플릿♻</h2>
 <ol>
     <li>
         <h4>jdbc전략패턴의 최적화&nbsp&nbsp<a href="https://github.com/EungyuCho/toby_spring_pract/commit/74b2b8af2675cda0dee6b6e5a89aeeaf22ed6f77">>></a></h4>

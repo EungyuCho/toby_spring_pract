@@ -1,37 +1,37 @@
-<h3><b>토비의 스프링</b> 
+<h1><b>토비의 스프링📚👨‍💻</b></h1> 
 <hr/><br/>
 
-<h2>Vol. 1 스프링 이해와 원리</h2>
+<h2>Vol. 1 스프링 이해와 원리📕</h2>
 <ol>
     <li>
-        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one1.md">오브젝트와 의존관계</a>
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one1.md">오브젝트와 의존관계</a> 🧲
     </li>
     <li>
-        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one2.md">테스트</a>
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one2.md">테스트</a> 🧪 
     </li>
     <li>
-        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one3.md">템플릿</a>
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one3.md">템플릿</a> ♻
     </li>
     <li>
-        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one4.md">예외</a>
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one4.md">예외</a> 🧺
     </li>
     <li>
-        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one5.md">서비스 추상화</a>
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one5.md">서비스 추상화</a> 🦰
     </li>
     <li>
-        AOP
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one6.md">AOP</a> 🙉
     </li>
     <li>
-        스프링 핵심 기술의 응용
+        <a href="https://github.com/EungyuCho/toby_spring_pract/blob/master/one7.md">스프링 핵심 기술의 응용</a> 🔧
     </li>
     <li>
-        스프링이란 무엇인가?
+        스프링이란 무엇인가? 🤷‍♂️🤷
     </li>
     <li>
-        스프링 프로젝트 시작하기
+        스프링 프로젝트 시작하기 👨‍🔧
     </li>
     <li>
-        <strong>부록</strong>
+        <strong>부록 📄</strong> 
         <BlockQuote>
             - 부록A 스프링 모듈<br/>
             - 부록B 스프링 의존 라이브러리<br/>
@@ -39,34 +39,34 @@
     </li>
 </ol>
 
-<h2>Vol. 2 스프링 이해와 원리</h2>
+<h2>Vol. 2 스프링 이해와 원리📘</h2>
 <ol>
     <li>
-        IOC 컨테이너와 DI
+        IOC 컨테이너와 DI 🌷🐝
     </li>
     <li>
-        데이터 엑세스 기술
+        데이터 엑세스 기술 🏃‍♂️
     </li>
     <li>
-        스프링 웹 기술과 스프링 MVC
+        스프링 웹 기술과 스프링 MVC 🕸
     </li>
     <li>
-        스프링 @MVC
+        스프링 @MVC 💁‍♀️🎮🎆
     </li>
     <li>
-        AOP와 LTW
+        AOP와 LTW 🙉🔌🐜
     </li>
     <li>
-        테스트 컨텍스트 프레임워크
+        테스트 컨텍스트 프레임워크 🔬
     </li>
     <li>
-        기타 기술과 효과적인 학습 방법
+        기타 기술과 효과적인 학습 방법 📖
     </li>
     <li>
-        스프링이란 무엇인가?
+        스프링이란 무엇인가? 🤷‍♂️🤷
     </li>
     <li>
-        <strong>부록</strong>
+        <strong>부록 📄</strong>
         <BlockQuote>
             - 부록A 스프링 모듈<br/>
             - 부록B 스프링 의존 라이브러리<br/>
