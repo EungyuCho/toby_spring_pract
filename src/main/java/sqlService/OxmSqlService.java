@@ -2,19 +2,15 @@ package sqlService;
 
 import java.io.IOException;
 import java.sql.SQLType;
-
 import javax.annotation.PostConstruct;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.Unmarshaller;
-
-import com.toby.pract1.UserDao;
-
 import sqlService.jaxb.SqlType;
 import sqlService.jaxb.Sqlmap;
+import user.UserDao;
 
 public class OxmSqlService implements SqlService{
 	private final BaseSqlService baseSqlService = new BaseSqlService();

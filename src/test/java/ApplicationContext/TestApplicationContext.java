@@ -1,14 +1,11 @@
 package ApplicationContext;
 
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
-
-import org.hsqldb.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -20,25 +17,29 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mysql.jdbc.Driver;
-import com.toby.pract1.DummyMailSender;
-import com.toby.pract1.UserDao;
-import com.toby.pract1.UserDaoJdbc;
-import com.toby.pract1.UserLevelUpgradePolicy;
-import com.toby.pract1.UserLevelUpgradePolicyBtype;
-import com.toby.pract1.UserService;
 import com.toby.pract1.UserServiceITest.TestUserService;
-import com.toby.pract1.UserServiceImpl;
 
 import sqlService.OxmSqlService;
 import sqlService.SqlRegistry;
 import sqlService.SqlService;
 import sqlService.embeddeddb.EmbeddedDbSqlRegistry;
+import user.DummyMailSender;
+import user.UserDao;
+import user.UserLevelUpgradePolicy;
+import user.UserLevelUpgradePolicyBtype;
+import user.service.UserService;
 
 @EnableTransactionManagement
 @Configuration
+@ComponentScan(basePackages = "user")
 public class TestApplicationContext {
 	@Autowired
-	SqlService sqlService;
+	UserDao userDao;
+	@Autowired
+	UserService userService;
+	@Autowired
+	UserLevelUpgradePolicy userLevelUpgradePolicy;
+	
 	@Bean
 	public DataSource dataSource() {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
@@ -55,45 +56,18 @@ public class TestApplicationContext {
 		tm.setDataSource(dataSource());
 		return tm;
 	}
-
-
-	@Bean
-	public UserDao userDao() {
-		UserDaoJdbc dao = new UserDaoJdbc();
-		dao.setDataSource(dataSource());
-		dao.setSqlService(this.sqlService);
-		return dao;
-	}
-	
-
-	@Bean
-	public UserService userService() {
-		UserServiceImpl service = new UserServiceImpl();
-		service.setUserDao(userDao());
-		service.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
-		service.setMailSender(mailSender());
-		return service;
-	}
 	
 	@Bean
 	public UserService testUserService() {
 		TestUserService testUserService = new TestUserService();
-		testUserService.setUserDao(userDao());
-		testUserService.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
+		testUserService.setUserDao(this.userDao);
 		testUserService.setMailSender(mailSender());
 		return testUserService;
 	}
 	
-	@Bean 
+	@Bean
 	public MailSender mailSender() {
 		return new DummyMailSender();
-	}
-	
-	@Bean
-	public UserLevelUpgradePolicy userLevelUpgradePolicy() {
-		UserLevelUpgradePolicyBtype policy = new UserLevelUpgradePolicyBtype();
-		policy.setUserDao(userDao());
-		return policy;
 	}
 	
 	@Bean

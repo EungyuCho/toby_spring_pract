@@ -1,6 +1,6 @@
 package Bean;
 
-import com.toby.pract1.Level;
+import user.Level;
 
 public class User {
 	String id;

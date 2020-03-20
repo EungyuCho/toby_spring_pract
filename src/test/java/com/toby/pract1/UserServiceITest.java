@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -31,6 +32,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -40,6 +42,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
 
 import ApplicationContext.TestApplicationContext;
@@ -49,6 +52,12 @@ import Pointcut.Target;
 import sqlService.SqlService;
 import sqlService.jaxb.SqlType;
 import sqlService.jaxb.Sqlmap;
+import user.Level;
+import user.UserDao;
+import user.UserDaoJdbc;
+import user.UserLevelUpgradePolicyBtype;
+import user.service.UserService;
+import user.service.UserServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -76,9 +85,7 @@ public class UserServiceITest {
 	ApplicationContext context;
 	private static int MIN_LOGCOUNT_FOR_SILVER;
 	private static int MIN_RECCOMEND_FOR_GOLD;
-	public void setMailSender(MailSender mailSender) {
-		this.mailSender = mailSender;
-	}
+	
 	public static class TestUserService extends UserServiceImpl{
 		private String id = "madnite1";
 		

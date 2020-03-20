@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Bean.User;
+import user.Level;
 
 public class UserTest {
 	User user;

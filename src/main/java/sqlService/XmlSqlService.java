@@ -3,16 +3,13 @@ package sqlService;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
-import com.toby.pract1.UserDao;
-
 import sqlService.jaxb.SqlType;
 import sqlService.jaxb.Sqlmap;
+import user.UserDao;
 
 public class XmlSqlService implements SqlService, SqlRegistry, SqlReader{
 	private Map<String, String> sqlMap = new HashMap<String, String>();

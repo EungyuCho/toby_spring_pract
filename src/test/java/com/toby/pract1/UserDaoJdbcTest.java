@@ -18,6 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import Bean.User;
+import user.Level;
+import user.UserDaoJdbc;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

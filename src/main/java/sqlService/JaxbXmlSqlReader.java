@@ -5,12 +5,9 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
-
-import com.toby.pract1.UserDao;
-
 import sqlService.jaxb.SqlType;
 import sqlService.jaxb.Sqlmap;
+import user.UserDao;
 
 public class JaxbXmlSqlReader implements SqlReader {
 	private static final String DEFAULT_SQLMAP_FILE = "sqlmap.xml";
