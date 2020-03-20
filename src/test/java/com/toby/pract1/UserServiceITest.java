@@ -79,7 +79,7 @@ public class UserServiceITest {
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;
 	}
-	static class TestUserService extends UserServiceImpl{
+	public static class TestUserService extends UserServiceImpl{
 		private String id = "madnite1";
 		
 		static class TestUserServiceException extends RuntimeException{
