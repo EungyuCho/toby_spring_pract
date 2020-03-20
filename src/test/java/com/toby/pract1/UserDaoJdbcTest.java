@@ -17,17 +17,18 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import ApplicationContext.TestApplicationContext;
 import Bean.User;
 import user.Level;
+import user.UserDao;
 import user.UserDaoJdbc;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/test-applicationContext.xml")
+@ContextConfiguration(classes = TestApplicationContext.class)
 public class UserDaoJdbcTest {
 	@Autowired
-	private UserDaoJdbc dao;
-	private DataSource dataSource;
+	private UserDao dao;
 	private User user1;
 	private User user2;
 	private User user3;
@@ -46,7 +47,6 @@ public class UserDaoJdbcTest {
 	}
 	@Test
 	public void addAndGet(){
-		
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 		

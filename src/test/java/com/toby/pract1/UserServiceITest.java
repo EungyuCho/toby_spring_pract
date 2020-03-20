@@ -45,11 +45,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
 
+import ApplicationContext.AppContext;
 import ApplicationContext.TestApplicationContext;
 import Bean.Bean;
 import Bean.User;
 import Pointcut.Target;
-import sqlService.SqlService;
 import sqlService.jaxb.SqlType;
 import sqlService.jaxb.Sqlmap;
 import user.Level;
@@ -61,7 +61,7 @@ import user.service.UserServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestApplicationContext.class)
+@ContextConfiguration(classes = {TestApplicationContext.class, AppContext.class})
 @Transactional
 @TransactionConfiguration(defaultRollback = false)
 public class UserServiceITest {
