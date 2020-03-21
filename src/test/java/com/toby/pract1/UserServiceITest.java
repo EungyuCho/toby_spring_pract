@@ -28,6 +28,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
@@ -35,6 +36,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -43,12 +45,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.toby.pract1.UserServiceITest.TestUserService.TestUserServiceException;
 
 import ApplicationContext.AppContext;
-import ApplicationContext.TestApplicationContext;
+import ApplicationContext.SqlServiceContext;
 import Bean.Bean;
 import Bean.User;
+import Exception.TestUserServiceException;
 import Pointcut.Target;
 import sqlService.jaxb.SqlType;
 import sqlService.jaxb.Sqlmap;
@@ -61,7 +63,8 @@ import user.service.UserServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestApplicationContext.class, AppContext.class})
+@ContextConfiguration(classes = AppContext.class)
+@ActiveProfiles("test")
 @Transactional
 @TransactionConfiguration(defaultRollback = false)
 public class UserServiceITest {
@@ -85,27 +88,6 @@ public class UserServiceITest {
 	ApplicationContext context;
 	private static int MIN_LOGCOUNT_FOR_SILVER;
 	private static int MIN_RECCOMEND_FOR_GOLD;
-	
-	public static class TestUserService extends UserServiceImpl{
-		private String id = "madnite1";
-		
-		static class TestUserServiceException extends RuntimeException{
-			
-		}
-		@Override
-		protected void upgradeLevel(User user) {
-			if(user.getId().equals(this.id)) throw new TestUserServiceException();
-			super.upgradeLevel(user);
-		}
-		@Override
-		public List<User> getAll(){
-			for(User user: super.getAll()) {
-				super.update(user);
-			}
-			return null;
-		}
-	}
-	
 	
 	@Before
 	public void setUp() {
@@ -305,10 +287,18 @@ public class UserServiceITest {
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 		
 		Sqlmap sqlmap = (Sqlmap) unmarshaller.unmarshal(is);
-		
-		
-		
 	}
 	
+	@Autowired
+	DefaultListableBeanFactory bf;
+	@Test
+	public void beans() {
+		System.out.println("&&&&&&빈 테스트&&&&&&&");
+		int count = 1;
+		for(String n : bf.getBeanDefinitionNames()) {
+			System.out.println(count + ". " + n + "\t " + bf.getBean(n).getClass().getName());
+			count ++;
+	}
+	}
 	
 }

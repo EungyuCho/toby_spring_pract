@@ -17,7 +17,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ApplicationContext.TestApplicationContext;
+import ApplicationContext.AppContext;
 import Bean.User;
 import user.Level;
 import user.UserDao;
@@ -25,7 +25,7 @@ import user.UserDaoJdbc;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestApplicationContext.class)
+@ContextConfiguration(classes = AppContext.class)
 public class UserDaoJdbcTest {
 	@Autowired
 	private UserDao dao;
