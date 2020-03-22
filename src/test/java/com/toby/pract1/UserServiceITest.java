@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -73,13 +74,15 @@ public class UserServiceITest {
 	@Autowired
 	UserService testUserService;
 	@Autowired
-	private UserDaoJdbc userDao;
+	private UserDao userDao;
 	@Autowired
 	DataSource dataSource;
 	@Autowired
 	PlatformTransactionManager transactionManager;
 	@Autowired
 	MailSender mailSender;
+	@Autowired
+	ArrayList<String> databaseResource;
 	List<User> users;
 	User user;
 	@Autowired
@@ -291,14 +294,27 @@ public class UserServiceITest {
 	
 	@Autowired
 	DefaultListableBeanFactory bf;
+	
 	@Test
+	@Ignore
 	public void beans() {
 		System.out.println("&&&&&&빈 테스트&&&&&&&");
 		int count = 1;
 		for(String n : bf.getBeanDefinitionNames()) {
 			System.out.println(count + ". " + n + "\t " + bf.getBean(n).getClass().getName());
 			count ++;
+		}
 	}
+	
+	@Test
+	@Ignore
+	public void getDatabaseResourceData() {
+		int count = 1;
+		for(String resource : databaseResource) {
+			System.out.println(count + "번째 데이터 : " + resource);
+			count++;
+		}
+		
 	}
 	
 }
