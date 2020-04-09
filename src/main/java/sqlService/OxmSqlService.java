@@ -32,7 +32,6 @@ public class OxmSqlService implements SqlService{
 	public void loadSql() {
 		this.baseSqlService.setSqlReader(this.oxmSqlReader);
 		this.baseSqlService.setSqlRegistry(this.sqlRegistry);
-		
 		this.baseSqlService.loadSql();
 	}
 	

@@ -7,5 +7,4 @@ public class ConsolePrinter implements Printer{
 		System.out.println(message);
 	}
 	
-
 }
