@@ -4,17 +4,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.isNotNull;
-
 import org.junit.Test;
-import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
 
-import Pojo.Hello.Hello;
-import Pojo.Hello.StringPrinter;
+import ioc.bean.Hello;
+import ioc.bean.StringPrinter;
 
 public class PojoHelloTest {
 	@Test
@@ -48,6 +48,16 @@ public class PojoHelloTest {
 		helloDef.getPropertyValues().addPropertyValue("printer", new RuntimeBeanReference("printer"));
 		
 		ac.registerBeanDefinition("hello", helloDef);
+		
+		Hello hello = ac.getBean("hello", Hello.class);
+		hello.print();
+		
+		assertThat(ac.getBean("printer").toString(), is("Hello Spring"));
+	}
+	
+	@Test
+	public void genericApplicationContext() {
+		GenericApplicationContext ac = new GenericXmlApplicationContext("ioc/genericApplicationContext.xml");
 		
 		Hello hello = ac.getBean("hello", Hello.class);
 		hello.print();
